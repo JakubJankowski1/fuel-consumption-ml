@@ -20,7 +20,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-The four direct dependencies are NumPy, pandas, Matplotlib, and scikit-learn. `requirements.txt` pins the versions used for the verified run. These commands assume `python` resolves to Python 3.12; check with `python --version` first. A fresh installation could not be independently verified in the preparation environment: creation of a clean virtual environment failed during `ensurepip`, and direct internet access to fetch packages/data was unavailable. The analysis itself was run using an existing Python 3.12 environment with the pinned versions.
+The four direct dependencies are NumPy, pandas, Matplotlib, and scikit-learn. `requirements.txt` pins the versions used for the verified run. These commands assume `python` resolves to Python 3.12; check with `python --version` first. A clean Python 3.12.7 virtual environment was created and the pinned dependencies were installed successfully; `pip check`, the tests, and the complete analysis passed. In the restricted verification environment, `ensurepip` initially failed because its temporary directory was unwritable. Pointing `TEMP` and `TMP` to a writable directory resolved that environment-specific issue.
 
 ## Get the data
 
@@ -32,7 +32,7 @@ Download the official **`auto-mpg.data`** file from the [UCI Auto MPG dataset pa
 
 This creates `data\Automobile.csv` in the format expected by the analysis. The converter expects the standard 398-record UCI file, maps origin codes 1/2/3 to `usa`/`europe`/`japan`, and leaves the six unknown horsepower entries blank. It uses only the Python standard library. Neither raw nor converted data is committed.
 
-The local `Automobile.csv` supplied with the original student project has the same 398-record structure and matching sample records, but its exact acquisition history was not documented. It was used for the verified run below, **not redistributed** here. The official UCI dataset is licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); cite: Quinlan, R. (1993), *Auto MPG*, UCI Machine Learning Repository, [doi:10.24432/C5859H](https://doi.org/10.24432/C5859H). The repository's data-preparation code does not imply ownership of the dataset.
+The official UCI file was downloaded for verification (SHA-256: `48b830e11feee5572525f8f1691ddb9d38d3d7b7063edcd8fca672c2a5e17d8d`). Its converted CSV matches the original student project's CSV value-for-value across all 398 rows and nine columns; textual numeric formatting and the inferred `weight` dtype differ. Neither dataset file is redistributed here. UCI licenses Auto MPG under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); cite: Quinlan, R. (1993), *Auto MPG*, UCI Machine Learning Repository, [doi:10.24432/C5859H](https://doi.org/10.24432/C5859H). The repository's data-preparation code does not imply ownership of the dataset.
 
 ## Run
 
@@ -45,7 +45,7 @@ The first command prints the data profile and model metrics and writes `outputs\
 
 ## Verified results
 
-The table is from an actual local run on the original project's `Automobile.csv`, using Python 3.12.7, NumPy 2.4.3, pandas 3.0.1, Matplotlib 3.10.8, and scikit-learn 1.8.0. The CSV contains 398 rows and 9 columns; six rows have missing horsepower and are dropped, leaving 392 rows. No exact row-by-row comparison with a freshly downloaded UCI file was possible in this environment. Results from the official download path should therefore be rerun and compared before claiming exact reproduction.
+The table is from an actual local run on a CSV freshly converted from UCI's `auto-mpg.data`, using a clean Python 3.12.7 environment with NumPy 2.4.3, pandas 3.0.1, Matplotlib 3.10.8, and scikit-learn 1.8.0. The CSV contains 398 rows and nine columns; six rows have missing horsepower and are dropped, leaving 392 rows. The generated comparison CSV and example R² chart are byte-for-byte identical to the previously saved examples.
 
 | Model | Train R² | Test R² | Test MAE (L/100 km) | Test RMSE (L/100 km) |
 | --- | ---: | ---: | ---: | ---: |
